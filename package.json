@@ -1,0 +1,20 @@
+{
+  "name": "etherlime-project",
+  "version": "1.0.0",
+  "description": "This is the default package.json generated for your project",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn compile && npx jest",
+    "testInBand": "yarn compile && npx jest --runInBand",
+    "compile": "npx etherlime compile"
+  },
+  "author": "Andrew Stewart <andrew.gord.stewart@gmail.com>",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "etherlime": "^2.2.3",
+    "etherlime-lib": "^1.1.5",
+    "ethers": "^4.0.37",
+    "jest": "^24.9.0"
+  }
+}
