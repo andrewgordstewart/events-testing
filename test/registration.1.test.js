@@ -11,19 +11,9 @@ it('Listens for the Registered event', async () => {
         signer
     ).deploy();
 
-let registeredEvent = new Promise((resolve, reject) => {
-    contract.on('Registered', (idx, event) => {
-        event.removeListener();
+    const tx = await contract.register(1);
+    const receipt = (await tx.wait())
+    const event = receipt.events.pop()
 
-        resolve({ idx: idx });
-    });
-
-    setTimeout(() => {
-        reject(new Error('timeout'));
-    }, 60000)
-});
-    await contract.register(1);
-    const event = await registeredEvent;
-
-    expect(event.idx._hex).toBe('0x01')
+    expect(event.args.idx._hex).toBe('0x01')
 })

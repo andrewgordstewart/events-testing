@@ -10,18 +10,9 @@ it('Listens for the Registered event', async () => {
         RegistrationArtifact.bytecode,
         signer
     ).deploy();
+    const tx = await contract.register(2);
+    const receipt = (await tx.wait())
+    const event = receipt.events.pop()
 
-let registeredEvent = new Promise((resolve, reject) => {
-    contract.on('Registered', (idx, event) => {
-        event.removeListener();
-
-        resolve({ idx: idx });
-    });
-
-    });
-
-    await contract.register(2);
-    const event = await registeredEvent;
-
-    expect(event.idx._hex).toBe('0x02')
+    expect(event.args.idx._hex).toBe('0x02')
 })
