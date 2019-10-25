@@ -5,7 +5,7 @@ const signer = provider.getSigner(0);
 
 jest.setTimeout(10000);
 
-it('Sometimes times out when two registrations occur', async () => {
+it('Usually times out when two registrations occur', async () => {
     let contract = await new ethers.ContractFactory(
         RegistrationArtifact.abi,
         RegistrationArtifact.bytecode,
@@ -31,4 +31,32 @@ it('Sometimes times out when two registrations occur', async () => {
 
     const event = await registration;
     expect(event.idx._hex).toBe('0x01')
+})
+
+it('Passes when just one registration occurs', async () => {
+    let contract = await new ethers.ContractFactory(
+        RegistrationArtifact.abi,
+        RegistrationArtifact.bytecode,
+        signer
+    ).deploy();
+
+    const idx = '0x03'
+    const filter = contract.filters.Registered(idx);
+    
+    let registration = new Promise((resolve, reject) => {
+        contract.on(filter, (idx, event) => {
+            event.removeListener();
+            
+            resolve({ idx: idx });
+        });
+
+        setTimeout(() => {
+            reject(new Error('timeout'));
+        }, 8000)
+    });
+    
+    await contract.register(idx);
+
+    const event = await registration;
+    expect(event.idx._hex).toBe(idx)
 })
