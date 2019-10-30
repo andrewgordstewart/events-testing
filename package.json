@@ -14,7 +14,7 @@
   "devDependencies": {
     "etherlime": "^2.2.3",
     "etherlime-lib": "^1.1.5",
-    "ethers": "^4.0.37",
+    "ethers": "^4.0.39",
     "jest": "^24.9.0"
   }
 }
